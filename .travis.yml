@@ -23,4 +23,10 @@ script:
 after_script:
   - docker images
 
+after_success: |
+  if [ "$TRAVIS_PULL_REQUEST" == "false" ] && ([ "$TRAVIS_BRANCH" == "master" ] || [ -n "$TRAVIS_TAG" ]); then
+    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    docker push "$image"
+  fi
+
 # vim:set et ts=2 sw=2:
